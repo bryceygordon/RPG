@@ -27,6 +27,7 @@ class Monster(Room):
 
     pass
 
+#new note
 
 def storeyline_checker(terrain_roll):
 
