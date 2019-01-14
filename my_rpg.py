@@ -31,6 +31,12 @@ class Monster(Room):
 #new note
 #another new note
 
+def abyss_fight():
+    print("this monster encounter hasn't been developed yet.")
+    print("returning to town")
+    return
+
+
 def storyline_checker(terrain_roll):
 
         if terrain_roll in terrain_check:
@@ -97,9 +103,17 @@ def explorer(room_number, direction):
         print(f"My current terrain is {current_room.terrain}")
         print(len(map))
         start(room_number)
+    elif direction == "down" and room_number == 0:
+         print("Entered the abyss")
+         abyss_fight()
+         start(room_number)
+    elif direction == "backward" and room_number == 0:
+        print("There's no going back from town. only forward")
+        start(room_number)
     else:
         print("""Cannot recognise this input,
-        please enter help if you need a list of controls""")
+        please enter help if you need a list of controls
+        returning to zone""")
         start(room_number)
 
 def start(room_number):
