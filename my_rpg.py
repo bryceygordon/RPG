@@ -45,7 +45,7 @@ def abyss_fight():
 def storyline_checker(terrain_roll):
 
         if terrain_roll in terrain_check:
-            print(f"Generic {terrain_roll} message")
+            print(f"You discover a new {terrain_roll} zone.")
         elif terrain_roll == "water":
             print(water_story)
             terrain_check.append(terrain_roll)
@@ -83,8 +83,9 @@ def terrain_generator():
         return terrain_generator()
 
 
-def explorer(room_number, direction):
+def explorer(room_number):
 
+    direction = input(">>> ").lower()
 
     if direction == "forward" and len(map) == room_number+1:
         room_number += 1
@@ -93,52 +94,51 @@ def explorer(room_number, direction):
         print(f"My current room is {current_room.level}")
         print(f"My current terrain is {current_room.terrain}")
         print(f"Map range length is {len(map)}")
-        start(room_number)
+        explorer(room_number)
     elif direction == "backward" and room_number != 0:
         room_number -= 1
         current_room = map[room_number]
+        print("Moving back to previous zone.\n")
         print(f"My current room is {current_room.level}")
         print(f"My current terrain is {current_room.terrain}")
         print(len(map))
-        start(room_number)
+        explorer(room_number)
     elif direction == "forward" and len(map) > room_number+1:
         room_number += 1
         current_room = map[room_number]
+        print("Moving forward to previously discovered zone.\n")
         print(f"My current room is {current_room.level}")
         print(f"My current terrain is {current_room.terrain}")
         print(len(map))
-        start(room_number)
+        explorer(room_number)
     elif direction == "down" and room_number == 0:
          print("Entered the abyss")
          abyss_fight()
-         start(room_number)
+         explorer(room_number)
     elif direction == "backward" and room_number == 0:
         print("There's no going back from town. only forward")
-        start(room_number)
+        explorer(room_number)
     elif direction == "hunt":
         print("program is now moving to hunt function")
         hunt()
-        start(room_number)
+        explorer(room_number)
     elif direction == "hunt" and room_number == 0:
         print("Cannot hunt in town. Heading back to town")
-        start(room_number)
+        explorer(room_number)
+    elif direction == "help":
+        print(controls)
+        input("Press any key to return to zone\n")
+        explorer(room_number)
     else:
         print("""Cannot recognise this input,
         please enter help if you need a list of controls
         returning to zone""")
-        start(room_number)
+        explorer(room_number)
 
-def start(room_number):
 
-    direction = input(">>> ").lower()
-    if direction == "help":
-        print(controls)
-        input("Press any key to return to zone\n")
-        start(room_number)
-    elif direction == "forward" or "backward":
-        explorer(room_number, direction)
+
 
 #print(intro)
 #storyline_checker()
 
-start(0)
+explorer(0)
