@@ -25,5 +25,6 @@ Help - List of controls
 Forward - Moves forward into the abyss.
 Backward - Moves to previous zone.
 
-"""
+""",
+"hunt" : "placeholder for hunt message"
 }

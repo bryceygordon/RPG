@@ -31,6 +31,11 @@ class Monster(Room):
 #new note
 #another new note
 
+def hunt():
+    print("the hunt option has not been developed yet")
+    print("you are still in the same zone")
+    return
+
 def abyss_fight():
     print("this monster encounter hasn't been developed yet.")
     print("returning to town")
@@ -109,6 +114,13 @@ def explorer(room_number, direction):
          start(room_number)
     elif direction == "backward" and room_number == 0:
         print("There's no going back from town. only forward")
+        start(room_number)
+    elif direction == "hunt":
+        print("program is now moving to hunt function")
+        hunt()
+        start(room_number)
+    elif direction == "hunt" and room_number == 0:
+        print("Cannot hunt in town. Heading back to town")
         start(room_number)
     else:
         print("""Cannot recognise this input,
