@@ -16,7 +16,6 @@ class Room(object):
 map = [Room(0,"town")]
 terrain = ["water", "fire", "earth"]
 terrain_check = []
-terrain_dump = [""]
 water_story = storyline.storyline_dict["water"]
 fire_story = storyline.storyline_dict["fire"]
 earth_story = storyline.storyline_dict["earth"]
@@ -45,7 +44,7 @@ def abyss_fight():
 def storyline_checker(terrain_roll):
 
         if terrain_roll in terrain_check:
-            print(f"You discover a new {terrain_roll} zone.")
+            print(f"You discover a new {terrain_roll} zone.\n")
         elif terrain_roll == "water":
             print(water_story)
             terrain_check.append(terrain_roll)
@@ -85,30 +84,31 @@ def terrain_generator():
 
 def explorer(room_number):
 
-    direction = input(">>> ").lower()
-
+    direction = input("\n>>> ").lower()
+    print("\n")
+    
     if direction == "forward" and len(map) == room_number+1:
         room_number += 1
         map.append(Room(room_number, terrain_generator()))
         current_room = map[room_number]
-        print(f"My current room is {current_room.level}")
-        print(f"My current terrain is {current_room.terrain}")
+        print(f"I am in a level {current_room.level}", end=" ")
+        print(f"{current_room.terrain} zone.")
         print(f"Map range length is {len(map)}")
         explorer(room_number)
     elif direction == "backward" and room_number != 0:
         room_number -= 1
         current_room = map[room_number]
         print("Moving back to previous zone.\n")
-        print(f"My current room is {current_room.level}")
-        print(f"My current terrain is {current_room.terrain}")
-        print(len(map))
+        print(f"I am in a level {current_room.level}", end=" ")
+        print(f"{current_room.terrain} zone.")
+        print(f"Map range length is {len(map)}")
         explorer(room_number)
     elif direction == "forward" and len(map) > room_number+1:
         room_number += 1
         current_room = map[room_number]
         print("Moving forward to previously discovered zone.\n")
-        print(f"My current room is {current_room.level}")
-        print(f"My current terrain is {current_room.terrain}")
+        print(f"I am in a level {current_room.level}", end=" ")
+        print(f"{current_room.terrain} zone.")
         print(len(map))
         explorer(room_number)
     elif direction == "down" and room_number == 0:
@@ -139,6 +139,6 @@ def explorer(room_number):
 
 
 #print(intro)
-#storyline_checker()
+
 
 explorer(0)

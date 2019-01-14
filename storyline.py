@@ -14,17 +14,18 @@ storyline_dict = {
 
     1. talk to shopkeeper
     2. enter the abyss""",
-"water" : """Placeholder for water full storyline""",
-"fire" : """Placeholder for fire full storyline""",
-"earth" : "Placeholder for earth full storyline",
-"secret_lair" : "Placeholder for secret_lair full storyline",
+"water" : """Placeholder for water full storyline\n""",
+"fire" : """Placeholder for fire full storyline\n""",
+"earth" : "Placeholder for earth full storyline\n",
+"secret_lair" : "Placeholder for secret_lair full storyline\n",
 "controls" :
 """
 
-Help - List of controls
+Help - List of controls.
 Forward - Moves forward into the abyss.
 Backward - Moves to previous zone.
+Down - Enter wyrmhole in town
 
 """,
-"hunt" : "placeholder for hunt message"
+"hunt" : "placeholder for hunt message\n"
 }
