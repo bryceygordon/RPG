@@ -22,6 +22,7 @@ fire_story = storyline.storyline_dict["fire"]
 earth_story = storyline.storyline_dict["earth"]
 intro = storyline.storyline_dict["intro"]
 secret_lair_storey = storyline.storyline_dict["secret_lair"]
+controls = storyline.storyline_dict["controls"]
 
 class Monster(Room):
 
@@ -97,12 +98,19 @@ def explorer(room_number, direction):
         print(len(map))
         start(room_number)
     else:
-        pass
+        print("""Cannot recognise this input,
+        please enter help if you need a list of controls""")
+        start(room_number)
 
 def start(room_number):
 
     direction = input(">>> ").lower()
-    explorer(room_number, direction)
+    if direction == "help":
+        print(controls)
+        input("Press any key to return to zone\n")
+        start(room_number)
+    elif direction == "forward" or "backward":
+        explorer(room_number, direction)
 
 #print(intro)
 #storyline_checker()

@@ -17,5 +17,13 @@ storyline_dict = {
 "water" : """Placeholder for water full storyline""",
 "fire" : """Placeholder for fire full storyline""",
 "earth" : "Placeholder for earth full storyline",
-"secret_lair" : "Placeholder for secret_lair full storyline"
+"secret_lair" : "Placeholder for secret_lair full storyline",
+"controls" :
+"""
+
+Help - List of controls
+Forward - Moves forward into the abyss.
+Backward - Moves to previous zone.
+
+"""
 }
