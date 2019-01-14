@@ -12,7 +12,8 @@ class Room(object):
         self.level = level
         self.terrain = terrain
 
-
+# there is surely a way to hide all of this variable assignment on another
+# module but I don't yet know how.
 map = [Room(0,"town")]
 terrain = ["water", "fire", "earth"]
 terrain_check = []
@@ -27,8 +28,6 @@ class Monster(Room):
 
     pass
 
-#new note
-#another new note
 
 def hunt():
     print("the hunt option has not been developed yet")
@@ -40,7 +39,12 @@ def abyss_fight():
     print("returning to town")
     return
 
-
+# As new rooms are generated for the first time I wanted a way to keep track
+# so I could ensure an opening message for a room is only explained on first
+# occurence, and then a generic after that. I am not sure if using a list is the
+# only way to do this. I also tried a for loop looking to see if the terrain
+# attribute of Room instances exist, but could not get this to work, so I have
+# created another separate list especially to keep track.
 def storyline_checker(terrain_roll):
 
         if terrain_roll in terrain_check:
@@ -81,12 +85,17 @@ def terrain_generator():
         print("rolling again")
         return terrain_generator()
 
-
+# I wanted a way to generate new rooms as the runner moves further into the
+# dungeon. I have created a variable for room number to keep track of what
+# room the player is currently in. I am still trying to figure out whether
+# a global variable will be better for this purpose. Also I have level as an
+# attribute of Room. I am thinking this will come in handy but may just be a
+# double up.
 def explorer(room_number):
 
     direction = input("\n>>> ").lower()
     print("\n")
-    
+
     if direction == "forward" and len(map) == room_number+1:
         room_number += 1
         map.append(Room(room_number, terrain_generator()))
