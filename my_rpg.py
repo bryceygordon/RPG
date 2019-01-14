@@ -12,6 +12,47 @@ class Room(object):
         self.level = level
         self.terrain = terrain
 
+
+class Monster(object):
+
+    def __init__(self, current_room):
+        type = current_room.terrain
+        level = current_room.level
+        evade_chance = 0.1
+        hitpoints = 100
+        damage_type = type
+        damage = level * 1.3
+        regen = 1
+        movement = 20
+        self.evade_chance = evade_chance
+        self.hitpoints = hitpoints
+        self.damage_type = damage_type
+        self.damage = damage
+        self.current_room = current_room
+        self.level = level
+        self.type = type
+        self.regen = regen
+
+
+class Elemental(Monster):
+    pass
+
+
+class Giant(Monster):
+    def __init__(self, current_room):
+        super().__init__(current_room)
+        hitpoints = hitpoints * 2
+
+class Fairy(Monster):
+    pass
+
+
+class Goblin(Monster):
+    pass
+
+
+
+
 # there is surely a way to hide all of this variable assignment on another
 # module but I don't yet know how.
 map = [Room(0,"town")]
@@ -24,14 +65,21 @@ intro = storyline.storyline_dict["intro"]
 secret_lair_storey = storyline.storyline_dict["secret_lair"]
 controls = storyline.storyline_dict["controls"]
 
-class Monster(Room):
-
-    pass
 
 
-def hunt():
-    print("the hunt option has not been developed yet")
-    print("you are still in the same zone")
+
+
+
+
+
+# I am thinking a timer here to look for monsters
+def hunt(current_room):
+    #print("the hunt option has not been developed yet")
+    #print("you are still in the same zone")
+    monster1 = Giant(current_room)
+    print(monster1.level)
+    print(monster1.regen)
+    print(monster1.hitpoints)
     return
 
 def abyss_fight():
@@ -93,32 +141,29 @@ def terrain_generator():
 # double up.
 def explorer(room_number):
 
+    current_room = map[room_number]
+
+    if room_number != 0:
+        print(f"I am in a level {current_room.level}", end=" ")
+        print(f"{current_room.terrain} zone.")
+        print(f"Map range length is {len(map)}")
+    else:
+        print("\nI'm in town")
+
     direction = input("\n>>> ").lower()
     print("\n")
 
     if direction == "forward" and len(map) == room_number+1:
         room_number += 1
         map.append(Room(room_number, terrain_generator()))
-        current_room = map[room_number]
-        print(f"I am in a level {current_room.level}", end=" ")
-        print(f"{current_room.terrain} zone.")
-        print(f"Map range length is {len(map)}")
         explorer(room_number)
     elif direction == "backward" and room_number != 0:
         room_number -= 1
-        current_room = map[room_number]
         print("Moving back to previous zone.\n")
-        print(f"I am in a level {current_room.level}", end=" ")
-        print(f"{current_room.terrain} zone.")
-        print(f"Map range length is {len(map)}")
         explorer(room_number)
     elif direction == "forward" and len(map) > room_number+1:
         room_number += 1
-        current_room = map[room_number]
         print("Moving forward to previously discovered zone.\n")
-        print(f"I am in a level {current_room.level}", end=" ")
-        print(f"{current_room.terrain} zone.")
-        print(len(map))
         explorer(room_number)
     elif direction == "down" and room_number == 0:
          print("Entered the abyss")
@@ -128,9 +173,9 @@ def explorer(room_number):
         print("There's no going back from town. only forward")
         explorer(room_number)
     elif direction == "hunt":
-        print("program is now moving to hunt function")
-        hunt()
-        explorer(room_number)
+        #print("program is now moving to hunt function")
+        hunt(current_room)
+        #explorer(room_number)
     elif direction == "hunt" and room_number == 0:
         print("Cannot hunt in town. Heading back to town")
         explorer(room_number)
@@ -148,6 +193,5 @@ def explorer(room_number):
 
 
 #print(intro)
-
 
 explorer(0)
