@@ -14,8 +14,8 @@ storyline_dict = {
 
     1. talk to shopkeeper
     2. enter the abyss""",
-"water" : """placeholder for water""",
-"fire" : """placeholder for fire""",
-"grass" : "placeholder for grass",
-"secret_lair" : "placeholder for secret_lair"
+"water" : """Placeholder for water full storyline""",
+"fire" : """Placeholder for fire full storyline""",
+"earth" : "Placeholder for earth full storyline",
+"secret_lair" : "Placeholder for secret_lair full storyline"
 }

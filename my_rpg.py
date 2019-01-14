@@ -14,12 +14,12 @@ class Room(object):
 
 
 map = [Room(0,"town")]
-terrain = ["water", "fire", "grass"]
+terrain = ["water", "fire", "earth"]
 terrain_check = []
 terrain_dump = [""]
 water_story = storyline.storyline_dict["water"]
 fire_story = storyline.storyline_dict["fire"]
-grass_story = storyline.storyline_dict["grass"]
+earth_story = storyline.storyline_dict["earth"]
 intro = storyline.storyline_dict["intro"]
 secret_lair_storey = storyline.storyline_dict["secret_lair"]
 
@@ -30,13 +30,10 @@ class Monster(Room):
 #new note
 #another new note
 
-def storeyline_checker(terrain_roll):
-
-    for elem in map:
-
+def storyline_checker(terrain_roll):
 
         if terrain_roll in terrain_check:
-            return
+            print(f"Generic {terrain_roll} message")
         elif terrain_roll == "water":
             print(water_story)
             terrain_check.append(terrain_roll)
@@ -45,8 +42,8 @@ def storeyline_checker(terrain_roll):
             print(fire_story)
             terrain_check.append(terrain_roll)
             return
-        elif terrain_roll == "grass":
-            print(grass_story)
+        elif terrain_roll == "earth":
+            print(earth_story)
             terrain_check.append(terrain_roll)
             return
         elif terrain_roll == 3:
@@ -54,7 +51,7 @@ def storeyline_checker(terrain_roll):
             terrain_check.append("secret_lair")
             return
         else:
-            print("error with storeyline_checker")
+            print("error with storyline_checker")
             exit(0)
 
 
@@ -63,11 +60,11 @@ def terrain_generator():
     t_dice = randint(0,3)
     if t_dice < len(terrain):
         terrain_roll = terrain[t_dice]
-        storeyline_checker(terrain_roll)
+        storyline_checker(terrain_roll)
         return terrain_roll
     elif randint(0,5) == 5:
         print("rare executed")
-        storeyline_checker(t_dice)
+        storyline_checker(t_dice)
         return "Secret Lair"
     else:
         print("rolling again")
@@ -108,6 +105,6 @@ def start(room_number):
     explorer(room_number, direction)
 
 #print(intro)
-#storeyline_checker()
+#storyline_checker()
 
 start(0)
