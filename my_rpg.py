@@ -2,6 +2,7 @@ from random import randint
 from textwrap import dedent
 import storyline
 from sys import exit
+import threading
 
 ### What do i want to do
 ### i want to created a new minted version of a class and store it in a dictionary
@@ -12,6 +13,17 @@ class Room(object):
 
             terrain = ["water", "fire", "earth"]
             self.level = level
+
+            available_monsters = {
+            "earth" : ["earth elemental", "earth giant", "earth fairy"],
+            "fire" : ["fire elemental", "fire giant", "fire fairy"],
+            "water" : ["water elemental", "water giant", "water fairy",
+            "snowman", "ice queen", "angry dolphin"],
+            "secret_lair" : ["elemental demon", "amulet goblin", "rabid dog",
+            "gold spider"]
+            }
+
+            inhabited_by = []
 
             def terrain_generator():
 
@@ -25,11 +37,25 @@ class Room(object):
                     print("rare executed")
                     return "secret_lair"
                 else:
-                    print("rolling again")
-
                     return terrain_generator()
 
+
             self.terrain = terrain_generator()
+
+            def monster_filler():
+
+                if level != 0:
+                    monster_choice = available_monsters[self.terrain]
+
+                    for j in range(0,randint(2,3)):
+                        monster_picker = randint(0, (len(monster_choice)-1))
+                        inhabited_by.append(monster_choice.pop(monster_picker))
+                else:
+                    pass
+
+            monster_filler()
+            self.inhabitants = inhabited_by
+
 
 
 class Monster(object):
@@ -72,6 +98,17 @@ class Goblin(Monster):
     pass
 
 
+class Snowman(Monster):
+    pass
+
+
+class IceQueen(Monster):
+    pass
+
+class AngryDolphin(Monster):
+    pass
+
+
 # there is surely a way to hide all of this variable assignment on another
 # module but I don't yet know how.
 map = [Room(0)]
@@ -89,11 +126,11 @@ controls = storyline.storyline_dict["controls"]
 def hunt(current_room):
     #print("the hunt option has not been developed yet")
     #print("you are still in the same zone")
-    monster1 = Giant(current_room)
-    print(monster1.level)
-    print(monster1.regen)
-    print(monster1.hitpoints)
-    return
+    def print_hunting():
+        print("Hunting")
+    def timer():
+        threading.Timer(1, print_hunting).start()
+    timer()
 
 def abyss_fight():
     print("this monster encounter hasn't been developed yet.")
@@ -145,6 +182,7 @@ def explorer(room_number):
     if room_number != 0:
         print(f"I am in a level {current_room.level}", end=" ")
         print(f"{current_room.terrain} zone.")
+        print(f"Monsters avaialbe: {current_room.inhabitants}")
         print(f"Map range length is {len(map)}")
     else:
         print("\nI'm in town")
@@ -181,6 +219,8 @@ def explorer(room_number):
             return_point.append(room_number)
             print("You portal to town\n")
             room_number = 0
+        elif room_number == 0 and len(return_point) == 0:
+            print("You have no portal in the abyss\n")
         else:
             room_number = return_point.pop()
             print("You return to portal location\n")
@@ -188,9 +228,8 @@ def explorer(room_number):
         print("""Cannot recognise this input,
         please enter help if you need a list of controls
         returning to zone""")
-        
+
     explorer(room_number)
 
 #print(intro)
-
 explorer(0)
