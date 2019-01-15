@@ -8,9 +8,28 @@ from sys import exit
 
 class Room(object):
 
-    def __init__(self, level, terrain):
-        self.level = level
-        self.terrain = terrain
+        def __init__(self, level):
+
+            terrain = ["water", "fire", "earth"]
+            self.level = level
+
+            def terrain_generator():
+
+                t_dice = randint(0,3)
+                if level == 0:
+                    return "town"
+                elif t_dice < len(terrain):
+                    terrain_roll = terrain[t_dice]
+                    return terrain_roll
+                elif randint(0,5) == 5:
+                    print("rare executed")
+                    return "secret_lair"
+                else:
+                    print("rolling again")
+
+                    return terrain_generator()
+
+            self.terrain = terrain_generator()
 
 
 class Monster(object):
@@ -39,9 +58,11 @@ class Elemental(Monster):
 
 
 class Giant(Monster):
+
     def __init__(self, current_room):
         super().__init__(current_room)
-        hitpoints = hitpoints * 2
+        self.hitpoints = self.hitpoints * 2
+        self.damage = self.damage * 1.5
 
 class Fairy(Monster):
     pass
@@ -51,12 +72,10 @@ class Goblin(Monster):
     pass
 
 
-
-
 # there is surely a way to hide all of this variable assignment on another
 # module but I don't yet know how.
-map = [Room(0,"town")]
-terrain = ["water", "fire", "earth"]
+map = [Room(0)]
+return_point = []
 terrain_check = []
 water_story = storyline.storyline_dict["water"]
 fire_story = storyline.storyline_dict["fire"]
@@ -64,12 +83,6 @@ earth_story = storyline.storyline_dict["earth"]
 intro = storyline.storyline_dict["intro"]
 secret_lair_storey = storyline.storyline_dict["secret_lair"]
 controls = storyline.storyline_dict["controls"]
-
-
-
-
-
-
 
 
 # I am thinking a timer here to look for monsters
@@ -87,51 +100,37 @@ def abyss_fight():
     print("returning to town")
     return
 
+
 # As new rooms are generated for the first time I wanted a way to keep track
 # so I could ensure an opening message for a room is only explained on first
 # occurence, and then a generic after that. I am not sure if using a list is the
 # only way to do this. I also tried a for loop looking to see if the terrain
 # attribute of Room instances exist, but could not get this to work, so I have
 # created another separate list especially to keep track.
-def storyline_checker(terrain_roll):
+def storyline_checker(current_room):
 
-        if terrain_roll in terrain_check:
-            print(f"You discover a new {terrain_roll} zone.\n")
-        elif terrain_roll == "water":
-            print(water_story)
-            terrain_check.append(terrain_roll)
-            return
-        elif terrain_roll == "fire":
-            print(fire_story)
-            terrain_check.append(terrain_roll)
-            return
-        elif terrain_roll == "earth":
-            print(earth_story)
-            terrain_check.append(terrain_roll)
-            return
-        elif terrain_roll == 3:
-            print(secret_lair_storey)
+        current_terrain = current_room.terrain
+
+        if current_terrain in terrain_check:
+            return print(f"You discover a new {current_terrain} zone.\n")
+        elif current_terrain == "water":
+            terrain_check.append(current_terrain)
+            return print(water_story)
+        elif current_terrain == "fire":
+            terrain_check.append(current_terrain)
+            return print(fire_story)
+        elif current_terrain == "earth":
+            terrain_check.append(current_terrain)
+            return print(earth_story)
+        elif current_terrain == "secret_lair":
             terrain_check.append("secret_lair")
-            return
+            return print(secret_lair_storey)
         else:
             print("error with storyline_checker")
             exit(0)
 
 
-def terrain_generator():
 
-    t_dice = randint(0,3)
-    if t_dice < len(terrain):
-        terrain_roll = terrain[t_dice]
-        storyline_checker(terrain_roll)
-        return terrain_roll
-    elif randint(0,5) == 5:
-        print("rare executed")
-        storyline_checker(t_dice)
-        return "Secret Lair"
-    else:
-        print("rolling again")
-        return terrain_generator()
 
 # I wanted a way to generate new rooms as the runner moves further into the
 # dungeon. I have created a variable for room number to keep track of what
@@ -155,42 +154,42 @@ def explorer(room_number):
 
     if direction == "forward" and len(map) == room_number+1:
         room_number += 1
-        map.append(Room(room_number, terrain_generator()))
-        explorer(room_number)
+        map.append(Room(room_number))
+        storyline_checker(map[room_number])
     elif direction == "backward" and room_number != 0:
         room_number -= 1
         print("Moving back to previous zone.\n")
-        explorer(room_number)
     elif direction == "forward" and len(map) > room_number+1:
         room_number += 1
         print("Moving forward to previously discovered zone.\n")
-        explorer(room_number)
     elif direction == "down" and room_number == 0:
          print("Entered the abyss")
          abyss_fight()
-         explorer(room_number)
     elif direction == "backward" and room_number == 0:
         print("There's no going back from town. only forward")
-        explorer(room_number)
     elif direction == "hunt":
         #print("program is now moving to hunt function")
         hunt(current_room)
         #explorer(room_number)
     elif direction == "hunt" and room_number == 0:
         print("Cannot hunt in town. Heading back to town")
-        explorer(room_number)
     elif direction == "help":
         print(controls)
         input("Press any key to return to zone\n")
-        explorer(room_number)
+    elif direction == "portal":
+        if room_number != 0:
+            return_point.append(room_number)
+            print("You portal to town\n")
+            room_number = 0
+        else:
+            room_number = return_point.pop()
+            print("You return to portal location\n")
     else:
         print("""Cannot recognise this input,
         please enter help if you need a list of controls
         returning to zone""")
-        explorer(room_number)
-
-
-
+        
+    explorer(room_number)
 
 #print(intro)
 
